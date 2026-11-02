@@ -34,60 +34,73 @@ if st.sidebar.button("Run Full Data Pipeline"):
             st.sidebar.success("Pipeline complete and tests passed!")
 
 # ==========================================
-# MAIN PAGE: NATIVE STREAMLIT DATA VIEWS
+# MAIN PAGE: TABS FOR DB, CSVS, AND TABLEAU
 # ==========================================
-st.subheader("Data Warehouse Overview")
+tab_db, tab_csv, tab_kpi, tab_ops = st.tabs([
+    "Database Overview", 
+    "CSV Viewer", 
+    "Executive KPI Dashboard", 
+    "Operational Compliance"
+])
 
-db_path = "data/contractorpay.db"
-
-if os.path.exists(db_path):
-    try:
-        conn = sqlite3.connect(db_path)
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.write("**Audit Exceptions (Flagged Timesheets)**")
-            df_audit = pd.read_sql_query("SELECT * FROM fact_audit_exceptions", conn)
-            st.dataframe(df_audit, use_container_width=True)
+with tab_db:
+    st.subheader("Data Warehouse Overview")
+    db_path = "data/contractorpay.db"
+    
+    if os.path.exists(db_path):
+        try:
+            conn = sqlite3.connect(db_path)
+            col1, col2 = st.columns(2)
             
-        with col2:
-            st.write("**Executive KPI Summary**")
-            df_kpi = pd.read_sql_query("SELECT * FROM v_executive_kpi_summary", conn)
-            st.dataframe(df_kpi, use_container_width=True)
-            
-        conn.close()
-    except Exception as e:
-        st.error(f"Error reading database: {e}")
-else:
-    st.info("Database not found. Please click 'Run Full Data Pipeline' in the sidebar to generate data.")
+            with col1:
+                st.write("**Audit Exceptions (Flagged Timesheets)**")
+                df_audit = pd.read_sql_query("SELECT * FROM fact_audit_exceptions", conn)
+                st.dataframe(df_audit, use_container_width=True)
+                
+            with col2:
+                st.write("**Executive KPI Summary**")
+                df_kpi = pd.read_sql_query("SELECT * FROM v_executive_kpi_summary", conn)
+                st.dataframe(df_kpi, use_container_width=True)
+                
+            conn.close()
+        except Exception as e:
+            st.error(f"Error reading database: {e}")
+    else:
+        st.info("Database not found. Please click 'Run Full Data Pipeline' in the sidebar.")
 
-st.divider()
+with tab_csv:
+    st.subheader("Raw & Exported CSV Files")
+    if os.path.exists("data"):
+        csv_files = [f for f in os.listdir("data") if f.endswith('.csv')]
+        
+        if csv_files:
+            selected_csv = st.selectbox("Select a CSV file to view:", csv_files)
+            if selected_csv:
+                df_csv = pd.read_csv(os.path.join("data", selected_csv))
+                st.dataframe(df_csv, use_container_width=True)
+        else:
+            st.info("No CSV files found in the data folder.")
+    else:
+        st.info("Data folder not found. Please run the pipeline.")
 
-# ==========================================
-# TABLEAU EMBED
-# ==========================================
-st.subheader("Tableau Visualizations")
-
-# Replace these with your actual published Tableau URLs
-tableau_url_1 = "https://public.tableau.com/views/ExecutiveKPIAgencyPerformanceSummary/ExecutiveKPIAgencyPerformanceSummary?:language=en-GB&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link"
-tableau_url_2 = "https://public.tableau.com/views/OperationalComplianceExceptions/OperationalComplianceExceptionsSummary?:language=en-GB&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link"
-
-# Create tabs for the two dashboards
-tab1, tab2 = st.tabs(["Agency Performance", "Contractor Overview"])
-
-with tab1:
+with tab_kpi:
+    st.subheader("Executive KPI & Agency Performance")
+    tableau_url_1 = "https://public.tableau.com/views/ExecutiveKPIAgencyPerformanceSummary/ExecutiveKPIAgencyPerformanceSummary?:showVizHome=no&:embed=true"
+    
     components.html(f'''
         <iframe src="{tableau_url_1}" 
         width="100%" 
-        height="800" 
+        height="900" 
         frameborder="0"></iframe>
-    ''', height=800)
+    ''', height=900)
 
-with tab2:
+with tab_ops:
+    st.subheader("Operational Compliance & Exceptions")
+    tableau_url_2 = "https://public.tableau.com/views/OperationalComplianceExceptions/OperationalComplianceExceptionsSummary?:showVizHome=no&:embed=true"
+    
     components.html(f'''
         <iframe src="{tableau_url_2}" 
         width="100%" 
-        height="800" 
+        height="900" 
         frameborder="0"></iframe>
-    ''', height=800)
+    ''', height=900)
