@@ -69,8 +69,8 @@ st.divider()
 st.subheader("Tableau Visualizations")
 
 # Replace these with your actual published Tableau URLs
-tableau_url_1 = https://public.tableau.com/views/ExecutiveKPIAgencyPerformanceSummary/ExecutiveKPIAgencyPerformanceSummary?:language=en-GB&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
-tableau_url_2 = https://public.tableau.com/views/OperationalComplianceExceptions/OperationalComplianceExceptionsSummary?:language=en-GB&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
+tableau_url_1 = "https://public.tableau.com/views/ExecutiveKPIAgencyPerformanceSummary/ExecutiveKPIAgencyPerformanceSummary?:language=en-GB&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link"
+tableau_url_2 = "https://public.tableau.com/views/OperationalComplianceExceptions/OperationalComplianceExceptionsSummary?:language=en-GB&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link"
 
 # Create tabs for the two dashboards
 tab1, tab2 = st.tabs(["Agency Performance", "Contractor Overview"])
