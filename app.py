@@ -18,11 +18,11 @@ st.sidebar.write("Run the pipeline to generate fresh data and update the databas
 if st.sidebar.button("Run Full Data Pipeline"):
     # Step 1: Generate Raw Data
     with st.spinner("Generating raw data..."):
-        subprocess.run(["python", "01_generate_raw_data.py"], check=True)
+        subprocess.run(["python3", "01_generate_raw_data.py"], check=True)
     
     # Step 2: Process SQL & Exports
     with st.spinner("Processing SQL & Exports..."):
-        subprocess.run(["python", "02_run_pipeline.py"], check=True)
+        subprocess.run(["python3", "02_run_pipeline.py"], check=True)
         
     # Step 3: Run Tests
     with st.spinner("Running Warehouse Checks..."):
