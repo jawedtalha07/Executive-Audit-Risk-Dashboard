@@ -26,7 +26,7 @@ if st.sidebar.button("Run Full Data Pipeline"):
         
     # Step 3: Run Tests
     with st.spinner("Running Warehouse Checks..."):
-        test_result = subprocess.run(["python", "03_run_tests.py"], capture_output=True, text=True)
+        test_result = subprocess.run(["python3", "03_run_tests.py"], capture_output=True, text=True)
         if "FAILED" in test_result.stdout:
             st.sidebar.error("Tests failed! Check logs.")
         else:
