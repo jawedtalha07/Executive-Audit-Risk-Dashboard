@@ -19,15 +19,15 @@ st.sidebar.write("Run the pipeline to generate fresh data and update the databas
 if st.sidebar.button("Run Full Data Pipeline"):
     # Step 1: Generate Raw Data
     with st.spinner("Generating raw data..."):
-        subprocess.run(["sys.executable", "01_generate_raw_data.py"], check=True)
+        subprocess.run([sys.executable, "01_generate_raw_data.py"], check=True)
     
     # Step 2: Process SQL & Exports
     with st.spinner("Processing SQL & Exports..."):
-        subprocess.run(["sys.executable", "02_run_pipeline.py"], check=True)
+        subprocess.run([sys.executable, "02_run_pipeline.py"], check=True)
         
     # Step 3: Run Tests
     with st.spinner("Running Warehouse Checks..."):
-        test_result = subprocess.run(["sys.executable", "03_run_tests.py"], capture_output=True, text=True)
+        test_result = subprocess.run([sys.executable, "03_run_tests.py"], capture_output=True, text=True)
         if "FAILED" in test_result.stdout:
             st.sidebar.error("Tests failed! Check logs.")
         else:
