@@ -34,14 +34,36 @@ if st.sidebar.button("Run Full Data Pipeline"):
             st.sidebar.success("Pipeline complete and tests passed!")
 
 # ==========================================
-# MAIN PAGE: TABS FOR DB, CSVS, AND TABLEAU
+# MAIN PAGE: TABS FOR TABLEAU, DB, AND CSVS
 # ==========================================
-tab_db, tab_csv, tab_kpi, tab_ops = st.tabs([
-    "Database Overview", 
-    "CSV Viewer", 
+tab_kpi, tab_ops, tab_db, tab_csv = st.tabs([
     "Executive KPI Dashboard", 
-    "Operational Compliance"
+    "Operational Compliance",
+    "Database Overview", 
+    "CSV Viewer"
 ])
+
+with tab_kpi:
+    st.subheader("Executive KPI & Agency Performance")
+    tableau_url_1 = "https://public.tableau.com/views/ExecutiveKPIAgencyPerformanceSummary/ExecutiveKPIAgencyPerformanceSummary?:showVizHome=no&:embed=true"
+    
+    components.html(f'''
+        <iframe src="{tableau_url_1}" 
+        width="100%" 
+        height="900" 
+        frameborder="0"></iframe>
+    ''', height=900)
+
+with tab_ops:
+    st.subheader("Operational Compliance & Exceptions")
+    tableau_url_2 = "https://public.tableau.com/views/OperationalComplianceExceptions/OperationalComplianceExceptionsSummary?:showVizHome=no&:embed=true"
+    
+    components.html(f'''
+        <iframe src="{tableau_url_2}" 
+        width="100%" 
+        height="900" 
+        frameborder="0"></iframe>
+    ''', height=900)
 
 with tab_db:
     st.subheader("Data Warehouse Overview")
@@ -82,25 +104,3 @@ with tab_csv:
             st.info("No CSV files found in the data folder.")
     else:
         st.info("Data folder not found. Please run the pipeline.")
-
-with tab_kpi:
-    st.subheader("Executive KPI & Agency Performance")
-    tableau_url_1 = "https://public.tableau.com/views/ExecutiveKPIAgencyPerformanceSummary/ExecutiveKPIAgencyPerformanceSummary?:showVizHome=no&:embed=true"
-    
-    components.html(f'''
-        <iframe src="{tableau_url_1}" 
-        width="100%" 
-        height="900" 
-        frameborder="0"></iframe>
-    ''', height=900)
-
-with tab_ops:
-    st.subheader("Operational Compliance & Exceptions")
-    tableau_url_2 = "https://public.tableau.com/views/OperationalComplianceExceptions/OperationalComplianceExceptionsSummary?:showVizHome=no&:embed=true"
-    
-    components.html(f'''
-        <iframe src="{tableau_url_2}" 
-        width="100%" 
-        height="900" 
-        frameborder="0"></iframe>
-    ''', height=900)
