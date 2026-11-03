@@ -42,8 +42,6 @@ SELECT
 FROM duplicate_detection
 WHERE submission_rank > 1;
 
--- !!!  Used AI to find the regulation  !!!
-
 -- 3. UK Working Time Directive: average over a 17-week window must not pass 48 hrs
 --    Note: the window is the contractor's last 17 timesheets (ROWS, not a date range),
 --    which is the same thing as long as they don't skip many weeks.
